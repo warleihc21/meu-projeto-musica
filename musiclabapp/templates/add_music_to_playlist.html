@@ -1,0 +1,31 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+{% block 'musicapp' %}
+
+{% if messages %}
+    <br>
+    {% for message in messages %}
+        <div class="alert {{message.tags}}">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<h1>Adicionar música à playlist "{{ playlist.nome }}"</h1>
+<form method="POST">
+  {% csrf_token %}
+  <label for="musica">Música:</label>
+  <select name="musica" id="musica">
+    {% for musica in musicas %}
+    <option value="{{ musica.pk }}">{{ musica.title }} - {{ musica.artist }} - {{ musica.genero }}</option>
+    {% endfor %}
+  </select>
+  <br>
+  <input type="submit" value="Adicionar">
+</form>
+  
+
+
+
+{% endblock%}

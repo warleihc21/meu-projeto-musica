@@ -1,0 +1,289 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+{% block 'musicapp' %}
+
+
+
+
+<style>
+.music-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+}
+
+
+button {
+  background-color: inherit;
+  color: inherit;
+  border: none;
+}
+
+
+</style>
+
+
+{% if messages %}
+    <br>
+    {% for message in messages %}
+        <div class="alert {{message.tags}}">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<br>
+<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modal">
+  Adicionar album completo
+</button>
+
+
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title titulo" id="exampleModalLabel">Cadastrar album</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          
+          <div class="modal-body">
+              <form action="{% url 'home_music' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+
+                  <div class="row">
+
+                      <div class="col-md-3">
+                          <img src="{% static 'musicapp/img/1012931.png' %}" style="max-width: 100px; max-height: 100px; width: auto; height: auto;">
+                      </div>
+
+                      <div class="col-md-9">
+                          <label>Album:</label>
+                          <input type="text" placeholder="Digite o nome do album..." class="form-control" name="album">
+                      </div>
+
+                  </div>
+
+                  <br>
+                  <label>Genero:</label>
+                  <select name="genero" class="form-control">
+                      <option value="blues">Blues</option>
+                      <option value="country">Country</option>
+                      <option value="eletronica">Eletrônica</option>
+                      <option value="forro">Forró</option>
+                      <option value="funk">Funk</option>
+                      <option value="hip_hop">Hip Hop</option>
+                      <option value="jazz">Jazz</option>
+                      <option value="mpb">MPB</option>
+                      <option value="musica_classica">Música Clássica</option>
+                      <option value="pagode">Pagode</option>
+                      <option value="pop">Pop</option>
+                      <option value="rap">Rap</option>
+                      <option value="reggae">Reggae</option>
+                      <option value="rock">Rock</option>
+                      <option value="metal">Metal</option>
+                      <option value="hardcore">Hardcore</option>
+                      <option value="punk">Punk</option>
+                      <option value="samba">Samba</option>
+                  </select>
+
+                  <br>
+
+                  <label>Artista:</label>
+                  <input type="text" placeholder="Digite o nome do artista..." class="form-control" name="artist">
+                  
+                  <br>
+                  
+                  <label for="">Arquivos:</label>
+                  <input class="form-control" type="file" name="file" multiple>
+                  <br>
+                  <input type="submit" class="btn btn-success btn-lg" value="Registar">
+              
+              </form>
+
+
+          </div>
+      
+      </div>
+  </div>
+</div>
+
+<div class="container col-lg-12" style="background-color: #454d55;">
+<h1 class="shadow" style="color: white;">Filtro</h1>
+    <form class="form" method="get">
+        <label class="shadow" style="color: white;" for="genero">Filtrar por gênero:</label>
+        <select name="genero" id="genero">
+            <option value="">Todos</option>
+            <option value="rock">Rock</option>
+            <option value="metal">Metal</option>
+            <option value="hardcore">Hardcore</option>
+            <option value="punk">Punk</option>
+            <option value="pop">Pop</option>
+            <option value="blues">Blues</option>
+            <option value="country">Country</option>
+            <option value="eletronica">Eletrônica</option>
+            <option value="forro">Forró</option>
+            <option value="funk">Funk</option>
+            <option value="gospel">Gospel</option>
+            <option value="hip_hop">Hip Hop</option>
+            <option value="jazz">Jazz</option>
+            <option value="mpb">MPB</option>
+            <option value="musica_classica">Música Clássica</option>
+            <option value="pagode">Pagode</option>
+            <option value="rap">Rap</option>
+            <option value="reggae">Reggae</option>
+            <option value="samba">Samba</option>
+
+        </select>
+        <button class="btn btn-primary" type="submit">Filtrar</button>
+    </form>
+</div>
+    
+
+      {% if musics %}
+      <table class="table table-hover table-dark" style="opacity: 0.8;">
+        <thead>
+          <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Artista</th>
+              <th scope="col">Álbum</th>
+              <th scope="col">Nome da Música</th>
+              <th scope="col">Genero</th>
+              <th scope="col">Player</th>
+          </tr>
+        </thead>
+        {% for music in musics %}
+          <tbody>
+            <tr>
+            
+              <th scope="row">{{ music.id }}</th>
+              
+              <td>{{ music.artist }}</td>
+              <td>{{ music.album }}<img class="d-block w-100 card-img-center img-fluid" src="{{ album.cover_art.url }}" alt="{{ album.title }}" style="max-width: 100px; max-height: 100px; width: auto; height: auto;"></td>
+              <td>{{ music.title }}</td>
+              <td>{{ music.genero }}</td>
+              <td><button class="play-button" style="font-size: 2em; color: #fff;" id="play-all-button" data-url="{{ music.file.url }}"><i class="bi bi-play-circle-fill"></i></button></td>
+        {% empty %}
+              <td>Nenhuma música encontrada.</td>
+              
+              
+        {% endfor %}
+              
+            </tr>
+          </tbody> 
+
+      </table>
+      
+      <div class="music-player bg-dark bg-gradient py-3" style="background-color: #454d55;">
+        <audio id="audio-player" controls>
+          <source id="audio-source" type="audio/mp3" />
+        </audio>
+        
+        
+        <div id="like" style="font-size: 1.5em; color: #fff; margin-left: 5px; margin-right: 5px;"><i class="bi bi-heart"></i></div>
+        
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;" id = "button-container">
+          <button style="font-size: 1.5em; color: #fff; margin-left: 5px; margin-right: 5px;" id="shuffle"><i class="bi bi-shuffle"></i></button>
+          <button style="font-size: 2em; color: #fff; margin-left: 5px; margin-right: 5px;" id="previous-button"><i class="bi bi-skip-start-fill"></i></button>
+          <button style="font-size: 3em; color: #fff; margin-left: 5px; margin-right: 5px;" id="play-all-button"><i class="bi bi-play-circle-fill"></i></button >
+          <button style="font-size: 2em; color: #fff; margin-left: 5px; margin-right: 5px;" id="next-button"><i class="bi bi-skip-end-fill"></i></button>
+          <button style="font-size: 1.5em; color: #fff; margin-left: 5px; margin-right: 5px;" id="repeat"><i class="bi bi-repeat"></i></button>
+        </div>
+        <div style="background-color:rgb(120, 132, 134); height: 3px; width: 100%; border-radius: 15px;"></div>
+      </div>  
+
+
+      {% endif %}
+      
+      
+      <script>
+        var playButtons = document.querySelectorAll('.play-button');
+        var urls = [];
+        var currentIndex = 0;
+      
+        playButtons.forEach(function(button) {
+          urls.push(button.dataset.url);
+          button.addEventListener('click', function() {
+            var audioPlayer = document.getElementById('audio-player');
+            var source = document.getElementById('audio-source');
+            source.src = button.dataset.url;
+            audioPlayer.load();
+            audioPlayer.play();
+            currentIndex = urls.indexOf(button.dataset.url);
+          });
+        });
+      
+        var playAllButton = document.getElementById('play-all-button');
+        playAllButton.addEventListener('click', function() {
+          var audioPlayer = document.getElementById('audio-player');
+          var source = document.getElementById('audio-source');
+          source.src = urls[currentIndex];
+          audioPlayer.load();
+          audioPlayer.play();
+      
+          audioPlayer.addEventListener('ended', function() {
+            currentIndex++;
+            if (currentIndex < urls.length) {
+              source.src = urls[currentIndex];
+              audioPlayer.load();
+              audioPlayer.play();
+            }
+          });
+        });
+      
+        var previousButton = document.getElementById('previous-button');
+        previousButton.addEventListener('click', function() {
+          var audioPlayer = document.getElementById('audio-player');
+          var source = document.getElementById('audio-source');
+          if (currentIndex > 0) {
+            currentIndex--;
+            source.src = urls[currentIndex];
+            audioPlayer.load();
+            audioPlayer.play();
+          }
+        });
+      
+        var nextButton = document.getElementById('next-button');
+        nextButton.addEventListener('click', function() {
+          var audioPlayer = document.getElementById('audio-player');
+          var source = document.getElementById('audio-source');
+          if (currentIndex < urls.length - 1) {
+            currentIndex++;
+            source.src = urls[currentIndex];
+            audioPlayer.load();
+            audioPlayer.play();
+          }
+        });
+
+      </script>
+      
+      <style>
+        .button-container {
+          margin-top: 20px;
+        }
+        .shadow {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+          border: none;
+          padding: 10px;
+          margin-right: 10px;
+        }
+      </style>
+      
+
+
+
+
+
+
+{% endblock%}

@@ -1,0 +1,112 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'musicapp/css/css.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+
+
+    <title>Adicionar Album!</title>
+
+
+
+  </head>
+
+  
+    
+
+
+
+
+  <body id="container">
+    
+    
+
+    {% if messages %}
+    <br>
+    {% for message in messages %}
+        <div class="alert {{message.tags}}">
+            {{message}}
+        </div>
+    {% endfor %}
+    {% endif %}
+        <br>
+
+      <button onclick="goBack()" class="btn btn-primary"><i class="bi bi-arrow-left"></i>Voltar</button>
+
+
+    <div class="container-fluid" style="opacity: 0.7;">
+      <div class="row">
+          <div class="col-md-12">
+              <a href="{% url 'add_album' %}" class="link-lateral" data-toggle="modal" data-target="#modal">
+                  <div class="card-lateral">
+                      <img src="{% static 'musicapp/img/paciente.png' %}">
+                      <br>
+                      <br>                
+                      <h3>Adicionar Álbum</h3>
+                  </div>
+              </a>
+          </div>
+
+          <div class="col-md-8">
+              {% block 'musicapp' %}
+
+
+              {% endblock %}
+          </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title titulo" id="exampleModalLabel">Cadastrar album</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              
+              <div class="modal-body">
+
+                <form method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    {{ form.as_p }}
+                  </div>
+                  <button class="btn btn-success" type="submit">Adicionar Album</button>
+                </form>               
+    
+    
+              </div>
+          
+          </div>
+      </div>
+    </div>
+
+    <script>
+      function goBack() {
+        window.location.href = "{{ request.META.HTTP_REFERER }}";
+      }
+    </script>
+
+                
+                
+                
+
+
+    <!-- JavaScript (Opcional) -->
+    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css"></script>
+
+  </body>
+</html>

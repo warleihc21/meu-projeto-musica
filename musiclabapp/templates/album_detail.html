@@ -1,0 +1,64 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+{% block 'musicapp' %}
+
+<div style="margin-top: auto;">
+
+    {% if messages %}
+        <br>
+        {% for message in messages %}
+            <div class="alert {{message.tags}}">
+                {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+
+        <h2 style="color: aliceblue;" class="title">{{ album.album }}</h2>
+        <img class="d-block w-100 card-img-center img-fluid shadow" src="{{ album.cover_art.url }}" alt="{{ album.title }}" style="max-width: 500px; max-height: 500px; width: auto; height: auto;">
+        <br>
+        <audio id="audio-player" controls>
+            <source id="audio-source" type="audio/mp3" />
+        </audio>
+        <br>
+        <table class="table table-hover table-dark" style="opacity: 0.8;">
+            <thead>
+            <tr>
+                <th scope="col">Nome da Música</th>
+                <th scope="col">Artista</th>              
+                <th scope="col">Ouvir</th>
+            </tr>
+            </thead>
+            {% for music in musics %}
+            <tbody>
+                <tr>              
+                <td>{{ music.title }}</td>
+                <td>{{ music.artist }}</td>
+                <td><button class="btn btn-primary play-button shadow" data-url="{{ music.file.url }}"><i class="bi bi-play-circle-fill btn-lg"></i></button></td>
+            {% empty %}
+                <li>Nenhuma música encontrada.</li>
+            {% endfor %}
+                </tr>
+            </tbody> 
+
+        </table>
+</div>
+
+        <script>
+            var playButtons = document.querySelectorAll('.play-button');
+            playButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var audioPlayer = document.getElementById('audio-player');
+                    var source = document.getElementById('audio-source');
+                    source.src = button.dataset.url;
+                    audioPlayer.load();
+                    audioPlayer.play();
+                });
+            });
+        </script>
+
+
+
+{% endblock%}

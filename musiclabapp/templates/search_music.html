@@ -1,0 +1,54 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+{% block 'musicapp' %}
+
+{% if messages %}
+    <br>
+    {% for message in messages %}
+        <div class="alert {{message.tags}}">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<br>
+
+<h1 style="color: aliceblue;">Resultados da pesquisa para '{{ query }}'</h1>
+
+{% if results %}
+<table class="table table-hover table-dark">
+    <thead>
+      <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Música</th>
+          <th scope="col">Álbum</th>
+          <th scope="col">Artista</th>
+          <th scope="col">Genero</th>
+          <th scope="col">Player</th>
+      </tr>
+    </thead>
+
+{% for music in results %}
+<tbody>
+    <tr>
+    
+      <th scope="row">{{ music.id }}</th>
+      <td>{{ music.title }}</td>
+      <td>{{ music.album }}</td>
+      <td>{{ music.artist }}</td>
+      <td>{{ music.genero }}</td>
+      <td><audio controls>
+            <source src="{{ music.file.url }}" type="audio/mpeg">
+        </audio></td>
+        
+{% endfor %}              
+    </tr>
+</tbody>
+{% else %}
+<p>Não foram encontrados resultados para a pesquisa.</p>
+{% endif %}
+
+
+{% endblock%}
+

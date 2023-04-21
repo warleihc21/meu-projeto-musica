@@ -1,0 +1,57 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+{% block 'musicapp' %}
+
+{% if messages %}
+    <br>
+    {% for message in messages %}
+        <div class="alert {{message.tags}}">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+
+    <h2>Editar Álbum</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
+
+    <br>
+    <br>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Duração</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for music in musics %}
+          <tr>
+            <td>{{ music.title }}</td>
+            <td>{{ music.duration }}</td>
+          
+            <td><a href="{% url 'add_song' album.id %}" class="btn btn-primary">Adicionar Música</a></td>
+            <td>
+              <form action="{% url 'delete_song' album.id song.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+              </form>
+        {% empty %} 
+            <li>Nenhuma música encontrada.</li>             
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+
+      
+
+
+
+{% endblock%}

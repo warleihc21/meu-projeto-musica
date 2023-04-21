@@ -1,0 +1,75 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+{% block 'musicapp' %}
+
+{% if messages %}
+    <br>
+    {% for message in messages %}
+        <div class="alert {{message.tags}}">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<h1>Playlists</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Músicas</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for playlist in playlists %}
+        <tr>
+          <th scope="row">{{ playlist.id }}</th>
+          <td>{{ playlist.nome }}</td>
+          <td>
+            {% for musica in playlist.musicas.all %}
+              {{ musica.artist }} - {{ musica.title }} ({{ musica.genero }})
+              {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>{{ playlist.nome }}</h2>
+  <ul>
+    {% for musica in playlist.musicas.all %}
+      <li>
+        <strong>{{ musica.title }}</strong>
+        <ul>
+          <li>Artista: {{ musica.artist }}</li>
+          <li>Gênero: {{ musica.genero }}</li>
+          <li>
+            <audio controls>
+              <source src="{{ musica.file.url }}" type="{{ musica.file.content_type }}">
+              Seu navegador não suporta a tag de áudio.
+            </audio>
+          </li>
+          <li>
+            <form method="POST" action="{% url 'delete_music_from_playlist' playlist.id musica.id %}">
+              {% csrf_token %}
+              <button type="submit">Deletar</button>
+            </form>
+          </li>
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
+  <hr>
+  <form method="POST" enctype="multipart/form-data" action="{% url 'add_music_to_playlist' playlist.id %}">
+    {% csrf_token %}
+    <h3>Adicionar música</h3>
+    {{ music_form.as_p }}
+    <button type="submit">Adicionar</button>
+  </form>
+  
+
+
+
+{% endblock%}

@@ -1,0 +1,25 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+{% block 'musicapp' %}
+
+{% if messages %}
+    <br>
+    {% for message in messages %}
+        <div class="alert {{message.tags}}">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<h1>Confirmar exclusão</h1>
+<p>Deseja realmente excluir o álbum "{{ album.title }}"?</p>
+<form action="{% url 'delete_album' album.id %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Excluir">
+  <a href="{% url 'album_list' %}">Cancelar</a>
+</form>
+
+
+
+{% endblock%}

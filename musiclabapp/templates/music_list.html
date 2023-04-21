@@ -1,0 +1,95 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Home!</title>
+
+
+  </head>   
+
+
+
+
+  <body>
+    {% if user.is_authenticated %}      
+      <nav style="background-color: #5c5c5c;" class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+          <a style="font-weight: bold" class="navbar-brand" href="{% url 'home_music' %}">MUSIC LAB</a>
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"><a class="nav-link" href="{% url 'home_music' %}">Início</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'add_music' %}">Adicionar música</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'music_list' %}">Listar músicas</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'add_album' %}">Adicionar álbum</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'album_list' %}">Listar álbum</a></li>
+            <li class="nav-item"><a class="nav-link">Bem vindo {{ user.username }}!</a></li>
+            <li><a class="nav-link scrollto" href="{% url 'sair' %}">Sair</a></li>
+          </ul>
+  
+          <form class="d-flex" role="search" method="GET" action="{% url 'search_music' %}">
+            <input class="form-control me-2" type="text" placeholder="Pesquisar..." aria-label="Search" name="q">
+            <button class="btn btn-outline-success" type="submit">Buscar</button>
+          </form>
+        </div>
+      </nav>
+    {% endif %}
+
+
+
+    <table class="table table-hover table-dark">
+      <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Música</th>
+            <th scope="col">Álbum</th>
+            <th scope="col">Artista</th>
+            <th scope="col">Genero</th>
+            <th scope="col">Player</th>
+        </tr>
+      </thead>    
+    {% for music in musics %}
+    <tbody>
+      <tr>
+      
+        <th scope="row">{{ music.id }}</th>
+        <td>{{ music.title }}</td>
+        <td>{{ music.album }}</td>
+        <td>{{ music.artist }}</td>
+        <td>{{ music.genero }}</td>
+        <td><audio controls>
+              <source src="{{ music.file.url }}" type="audio/mpeg">
+              Seu navegador não suporta o elemento de áudio. 
+          </audio></td>
+    {% endfor %} 
+    
+    
+
+
+    
+
+    
+
+
+
+
+
+                
+                
+                
+
+
+    <!-- JavaScript (Opcional) -->
+    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>
+

@@ -1,0 +1,24 @@
+{% extends 'base_plataforma.html' %}
+{% load static %}
+
+{% block 'musicapp' %}
+
+{% if messages %}
+    <br>
+    {% for message in messages %}
+        <div class="alert {{message.tags}}">
+            {{message}}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<br>
+
+<h1>Selecione uma música para tocar:</h1>
+<ul>
+    {% for music in music_list %}
+        <li><a href="{% url 'play_music' music.id %}">{{ music.title }}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock%}
