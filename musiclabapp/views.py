@@ -207,3 +207,9 @@ def add_song(request, album_id):
 
 
 
+@login_required(login_url='/auth/logar/')
+def minha_playlist(request):
+    return render(request, 'minha_playlist.html')
+
+
+

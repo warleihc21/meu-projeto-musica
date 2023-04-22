@@ -13,7 +13,11 @@ urlpatterns = [
     path('add_music/', views.add_music, name='add_music'),
     path('create_playlist/', views.create_playlist, name='create_playlist'),
     path('playlist_list/', views.playlist_list, name='playlist_list'),
+    path('minha_playlist/', views.minha_playlist, name='minha_playlist'),
     path('add_music_to_playlist/<int:music_id>/', views.add_music_to_playlist, name='add_music_to_playlist'),
+
+
+    
 
     path('search_music/', views.search_music, name='search_music'),
     path('album_detail/<int:album_id>/', views.album_detail, name='album_detail'),

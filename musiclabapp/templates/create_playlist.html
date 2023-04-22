@@ -20,24 +20,27 @@
   <body>
 
     <h2>Criar Playlist</h2>
-  <form class="table" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <hr>
-    <h4>Selecione as músicas:</h4>
-    {% for artist, musicas_genero in musicas_agrupadas.items %}
-      <h5>{{ artist }}</h5>
-      <ul>
-        {% for genero, musicas in musicas_genero.items %}
-          <li>{{ genero }}</li>
-          {% for musica in musicas %}
-            <li><input type="checkbox" name="musicas" value="{{ musica.pk }}"> {{ musica.title }}</li>
+    <form class="table" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <hr>
+      <h4>Selecione as músicas:</h4>
+      {% for artist, musicas_genero in musicas_agrupadas.items %}
+        <h5>{{ artist }}</h5>
+        <ul>
+          {% for genero, musicas in musicas_genero.items %}
+            <li>{{ genero }}</li>
+            {% for musica in musicas %}
+              <li><input type="checkbox" name="musicas" value="{{ musica.pk }}"> {{ musica.title }}</li>
+            {% endfor %}
           {% endfor %}
-        {% endfor %}
-      </ul>
-    {% endfor %}
-    <button type="submit">Criar</button>
-  </form>
+        </ul>
+      {% endfor %}
+      <button type="submit">Criar</button>
+    </form>
+
+
+
     
  
 

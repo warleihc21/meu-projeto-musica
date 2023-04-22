@@ -67,35 +67,37 @@
       {% endif %}
 
 
-      {% for album in albums %}
-          <div class="row">
-              <div class="col-md-12">
-                  <div>
-                      <div class="border-0 text-center card shadow m-3" style="width: 200px; height: 400px; background-color: white;">
-                          <div class="card-img-center m-3" style="height: 100px; width: 100px;">
-                              {% if album.cover_art %}
-                                  <img class="card-img-center" src="{{ album.cover_art.url }}" alt="{{ album.title }}" style="max-width: 150px; max-height: 150px; width: auto; height: auto;">
-                              {% else %}
-                                  <img class="card-img-center" src="{% static 'musicapp/img/no-image.png' %}" style="max-width: 150px; max-height: 150px; width: auto; height: auto;">
-                              {% endif %}
-                          </div>
-                          <br style="border: 1px; color: black;">
-                          <div class="card-body">
-                              <h4 class="card-title"><a href="#">{{ album.artist }}</a></h4>
-                              <p><a href="{% url 'album_detail' album.pk %}">{{ album.title }}</a></p> 
+      <div class="row">
+        {% for album in albums %}            
+                <div class="col-lg-2">
+                        <div class="border-0 text-center card shadow m-3" style="width: 200px; height: 400px; background-color: white;">
+                            <div class=" card-img card-img-center m-3" style="height: 100px; width: 100px;">
+                                {% if album.cover_art %}
+                                    <img class="card-img-top" src="{{ album.cover_art.url }}" alt="{{ album.title }}" style="max-width: 150px; max-height: 150px; width: auto; height: auto;">
+                                {% else %}
+                                    <img class="card-img-top" src="{% static 'musicapp/img/no-image.png' %}" style="max-width: 150px; max-height: 150px; width: auto; height: auto;">
+                                {% endif %}
+                            </div>
+                            <br>
+
+                            <div class="card-body">
+                                <h4 class="card-title"><a href="#">{{ album.artist }}</a></h4>
+                                <p><a href="{% url 'album_detail' album.pk %}">{{ album.title }}</a></p>                               
+                            </div>
+                            <div class="card-footer">
                               <a href="{% url 'edit_album' album.pk %}"><button class="btn btn-warning">Editar</button></a>
                               <a href="{% url 'delete_album' album.pk %}"><button class="btn btn-danger">Excluir</button></a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      {% endfor %}  
+                            </div>
+                        </div>
+                </div>
+            
+        {% endfor %} 
+      </div>
       
     </div>
       
       
-    <div class="container">
+    <div class="container-fluid">
 
         <h1 style="color: white;">Lista de Álbuns</h1>
       <table class="table table-hover table-dark" style="opacity: 0.8;">
